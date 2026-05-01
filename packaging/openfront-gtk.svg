@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2b6cb0"/>
+      <stop offset="100%" stop-color="#1a365d"/>
+    </linearGradient>
+    <linearGradient id="flag" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f6ad55"/>
+      <stop offset="100%" stop-color="#dd6b20"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="120" height="120" rx="22" ry="22" fill="url(#bg)"/>
+  <!-- Flagpole -->
+  <rect x="40" y="24" width="6" height="80" rx="2" fill="#e2e8f0"/>
+  <!-- Flag -->
+  <path d="M46 28 L96 28 L86 44 L96 60 L46 60 Z" fill="url(#flag)" stroke="#7b341e" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Base -->
+  <ellipse cx="64" cy="106" rx="34" ry="6" fill="#0d1b2a" opacity="0.5"/>
+</svg>
