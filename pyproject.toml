@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openfront-gtk"
+version = "1.0.0"
+description = "GTK desktop wrapper for the OpenFront.io browser-based RTS"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Devin" }]
+keywords = ["openfront", "gtk", "webkit", "game", "wrapper"]
+classifiers = [
+  "Environment :: X11 Applications :: GTK",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Topic :: Games/Entertainment :: Real Time Strategy",
+]
+# PyGObject + WebKit2 bindings are installed via the system package manager
+# (apt / dnf), not pip — see README. No pip-installable runtime deps.
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/yourusername/openfront-gtk"
+"Bug Tracker" = "https://github.com/yourusername/openfront-gtk/issues"
+Game = "https://openfront.io/"
+
+[project.scripts]
+openfront-gtk = "openfront_gtk.app:main"
+
+[tool.setuptools]
+packages = ["openfront_gtk"]
