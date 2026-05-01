@@ -14,10 +14,8 @@ and changes frequently).
 from __future__ import annotations
 
 import argparse
-import glob
 import os
 import sys
-import sysconfig
 from pathlib import Path
 
 import gi
@@ -25,34 +23,19 @@ import gi
 # ---------------------------------------------------------------------------
 # Negotiate GTK + WebKit versions.
 #
-# We can't blindly chain try/except with gi.require_version, because once a
-# namespace is pinned to a version (even tentatively), it can't be re-pinned
-# in the same process. So we first inspect which typelibs are installed on
-# disk and only then commit to a combination.
+# We query GIRepository for which versions are actually available, rather
+# than scanning the filesystem (which breaks when the typelib dir doesn't
+# match a hardcoded list). enumerate_versions() doesn't pin anything, so
+# we can probe safely before committing with gi.require_version().
 # ---------------------------------------------------------------------------
+gi.require_version("GIRepository", "2.0")
+from gi.repository import GIRepository as _GIRepo  # noqa: E402
+
+_repo = _GIRepo.Repository.get_default()
+
+
 def _typelib_available(namespace: str, version: str) -> bool:
-    """Return True if `<namespace>-<version>.typelib` is installed."""
-    search_dirs = [
-        "/usr/lib/x86_64-linux-gnu/girepository-1.0",
-        "/usr/lib64/girepository-1.0",
-        "/usr/lib/girepository-1.0",
-        "/usr/local/lib/girepository-1.0",
-        os.path.join(sys.prefix, "lib", "girepository-1.0"),
-        os.path.join(sys.prefix, "lib64", "girepository-1.0"),
-    ]
-    search_dirs += glob.glob("/usr/lib/*/girepository-1.0")
-    extra = os.environ.get("GI_TYPELIB_PATH", "")
-    if extra:
-        search_dirs = extra.split(os.pathsep) + search_dirs
-    fname = f"{namespace}-{version}.typelib"
-    seen = set()
-    for d in search_dirs:
-        if not d or d in seen:
-            continue
-        seen.add(d)
-        if os.path.exists(os.path.join(d, fname)):
-            return True
-    return False
+    return version in _repo.enumerate_versions(namespace)
 
 
 _WEBKIT_API: str
@@ -69,7 +52,6 @@ else:
         "ERROR: WebKitGTK is not installed.\n"
         "On Zorin/Ubuntu/Debian, install with:\n"
         "  sudo apt install python3-gi gir1.2-gtk-3.0 gir1.2-webkit2-4.1\n"
-        "  or on newer distros: sudo apt install python3-gi gir1.2-gtk-3.0 gir1.2-webkit-6.0\n"
         "On Fedora:\n"
         "  sudo dnf install python3-gobject gtk3 webkit2gtk4.1\n"
     )
