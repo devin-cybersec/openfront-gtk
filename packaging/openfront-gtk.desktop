@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=OpenFront
+GenericName=Online RTS
+Comment=Browser-based real-time strategy game (desktop wrapper)
+Exec=openfront-gtk
+Icon=openfront-gtk
+Terminal=false
+Categories=Game;StrategyGame;
+Keywords=rts;strategy;openfront;game;
+StartupNotify=true
+StartupWMClass=io.github.openfront_gtk
